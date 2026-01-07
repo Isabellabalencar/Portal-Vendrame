@@ -1,0 +1,38 @@
+# =========================
+# Python / Flask
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+*.log
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+.webassets-cache/
+.flaskenv
+
+# =========================
+# Environment variables / secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# SQLite / Database
+# =========================
+*.db
+*.sqlite
+*.sqlite3
