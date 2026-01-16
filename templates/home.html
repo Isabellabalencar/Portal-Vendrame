@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home | Portal Vendrame</title>
-</head>
-<body>
-  <h1>Bem-vindo, {{ nome }}!</h1>
-  <p>Home em construção.</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | Portal Vendrame</title>
+
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='assets/icone.png') }}"
+      type="image/png"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+  </head>
+
+  <body>
+    <main class="page">
+      <div class="overlay"></div>
+
+      <section class="content">
+        <h1 class="title">Bem-vindo, {{ nome }}</h1>
+        <p class="subtitle">Selecione uma opção para continuar</p>
+
+  <div class="actions">
+  <!-- Card 1 -->
+  <a class="card card-image" href="{{ url_for('home.nova_solicitacao') }}">
+    <div class="card-media">
+      <img
+        src="{{ url_for('static', filename='assets/solicitacoes.png') }}"
+        alt="Nova Solicitação"
+      />
+    </div>
+    <span class="card-bar" aria-hidden="true"></span>
+  </a>
+
+  <!-- Card 2 -->
+  <a class="card card-image" href="{{ url_for('home.minhas_solicitacoes') }}">
+    <div class="card-media">
+      <img
+        src="{{ url_for('static', filename='assets/agendamentos.png') }}"
+        alt="Minhas Solicitações"
+      />
+    </div>
+    <span class="card-bar" aria-hidden="true"></span>
+  </a>
+</div>
+
+
+        <footer class="footer">© 2026 Vendrame. Todos os direitos reservados.</footer>
+      </section>
+    </main>
+  </body>
 </html>
