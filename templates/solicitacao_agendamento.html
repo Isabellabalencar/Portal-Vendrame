@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
@@ -16,34 +16,40 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/solicitacao_agendamento.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/solicitacao_agendamento.css') }}"
+    />
   </head>
 
   <body>
     <header class="topbar">
-      <a class="back" href="{{ url_for('home.nova_solicitacao') }}">← Voltar</a>
+      <a class="back" href="{{ url_for('home.home') }}">← Voltar</a>
       <h1>Nova Solicitação</h1>
       <div class="spacer"></div>
     </header>
 
     <main class="page">
       <section class="card">
-        <form action="{{ url_for('sol_agendamento.solicitacao_agendamento') }}" method="POST">
-
+        <form
+          action="{{ url_for('sol_agendamento.solicitacao_agendamento') }}"
+          method="POST"
+          enctype="multipart/form-data"
+        >
           <!-- Tipo de Exame -->
           <div class="field">
             <label for="tipo_exame">Tipo de Exame</label>
             <select id="tipo_exame" name="tipo_exame" required>
-              <option value="Admissional" selected>Admissional</option>
-              <option value="Periódico">Periódico</option>
-              <option value="Demissional">Demissional</option>
-              <option value="Retorno ao Trabalho">Retorno ao Trabalho</option>
-              <option value="Mudança de riscos ocupacionais">Mudança de riscos ocupacionais</option>
-              <option value="Avaliação médica">Avaliação médica</option>
+              <option value="Admissional" {{ 'selected' if tipo_exame == 'Admissional' else '' }}>Admissional</option>
+              <option value="Periódico" {{ 'selected' if tipo_exame == 'Periódico' else '' }}>Periódico</option>
+              <option value="Demissional" {{ 'selected' if tipo_exame == 'Demissional' else '' }}>Demissional</option>
+              <option value="Retorno ao Trabalho" {{ 'selected' if tipo_exame == 'Retorno ao Trabalho' else '' }}>Retorno ao Trabalho</option>
+              <option value="Mudança de riscos ocupacionais" {{ 'selected' if tipo_exame == 'Mudança de riscos ocupacionais' else '' }}>Mudança de riscos ocupacionais</option>
+              <option value="Avaliação médica" {{ 'selected' if tipo_exame == 'Avaliação médica' else '' }}>Avaliação médica</option>
             </select>
           </div>
 
-          <!-- Telefone -->
+          <!-- Telefone (comum) -->
           <div class="field">
             <label for="telefone">Telefone (WhatsApp) <span class="req">*</span></label>
             <input
@@ -55,100 +61,104 @@
             />
           </div>
 
-          <!-- ====== ADMISSIONAL (igual ao print) ====== -->
-          <section class="type-block" data-type="Admissional">
-            <div class="grid-2">
-              <div class="field">
-                <label for="cnpj">CNPJ da empresa <span class="req">*</span></label>
-                <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required />
-              </div>
+        <section class="type-block" data-type="Admissional">
+  <div class="grid-2">
+    <div class="field">
+      <label for="a_cnpj">CNPJ da empresa <span class="req">*</span></label>
+      <input type="text" id="a_cnpj" name="a_cnpj" placeholder="00.000.000/0000-00" required />
+    </div>
 
-              <div class="field">
-                <label for="funcionario">Nome do funcionário <span class="req">*</span></label>
-                <input type="text" id="funcionario" name="funcionario" required />
-              </div>
+    <div class="field">
+      <label for="a_funcionario">Nome do funcionário <span class="req">*</span></label>
+      <input type="text" id="a_funcionario" name="a_funcionario" required />
+    </div>
 
-              <div class="field">
-                <label for="unidade">Nome unidade da empresa <span class="req">*</span></label>
-                <input type="text" id="unidade" name="unidade" required />
-              </div>
+    <div class="field">
+      <label for="a_unidade">Nome unidade da empresa <span class="req">*</span></label>
+      <input type="text" id="a_unidade" name="a_unidade" required />
+    </div>
 
-              <div class="field">
-                <label for="rg">RG <span class="req">*</span></label>
-                <input type="text" id="rg" name="rg" required />
-              </div>
+    <div class="field">
+      <label for="a_rg">RG <span class="req">*</span></label>
+      <input type="text" id="a_rg" name="a_rg" required />
+    </div>
 
-              <div class="field">
-                <label for="empresa">Nome da empresa <span class="req">*</span></label>
-                <input type="text" id="empresa" name="empresa" required />
-              </div>
+    <div class="field">
+      <label for="a_empresa">Nome da empresa <span class="req">*</span></label>
+      <input type="text" id="a_empresa" name="a_empresa" required />
+    </div>
 
-              <div class="field">
-                <label for="cpf">CPF <span class="req">*</span></label>
-                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required />
-              </div>
+    <div class="field">
+      <label for="a_cpf">CPF <span class="req">*</span></label>
+      <input type="text" id="a_cpf" name="a_cpf" placeholder="000.000.000-00" required />
+    </div>
 
-              <div class="field">
-                <label for="centro_custo">Centro de custo (opcional)</label>
-                <input type="text" id="centro_custo" name="centro_custo" />
-              </div>
+    <div class="field">
+      <label for="a_centro_custo">Centro de custo (opcional)</label>
+      <input type="text" id="a_centro_custo" name="a_centro_custo" />
+    </div>
 
-              <div class="field">
-                <label for="nascimento">Data de nascimento <span class="req">*</span></label>
-                <input type="date" id="nascimento" name="nascimento" required />
-              </div>
+    <div class="field">
+      <label for="a_nascimento">Data de nascimento <span class="req">*</span></label>
+      <input type="date" id="a_nascimento" name="a_nascimento" required />
+    </div>
 
-              <div class="field">
-                <label for="codigo_rh">Código do RH <span class="req">*</span></label>
-                <input type="text" id="codigo_rh" name="codigo_rh" required />
-              </div>
+    <div class="field">
+      <label for="a_codigo_rh">Código do RH <span class="req">*</span></label>
+      <input type="text" id="a_codigo_rh" name="a_codigo_rh" required />
+    </div>
 
-              <div class="field">
-                <label for="admissao">Data da admissão <span class="req">*</span></label>
-                <input type="date" id="admissao" name="admissao" required />
-              </div>
+    <div class="field">
+      <label for="a_admissao">Data da admissão <span class="req">*</span></label>
+      <input type="date" id="a_admissao" name="a_admissao" required />
+    </div>
 
-              <div class="field">
-                <label for="data_preferencia">Data de preferência <span class="req">*</span></label>
-                <input type="date" id="data_preferencia" name="data_preferencia" required />
-              </div>
+    <div class="field">
+      <label for="a_data_preferencia">Data de preferência <span class="req">*</span></label>
+      <input type="date" id="a_data_preferencia" name="a_data_preferencia" required />
+    </div>
 
-              <div class="field">
-                <label for="funcao">Função <span class="req">*</span></label>
-                <input type="text" id="funcao" name="funcao" required />
-              </div>
+    <div class="field">
+      <label for="a_funcao">Função <span class="req">*</span></label>
+      <input type="text" id="a_funcao" name="a_funcao" required />
+    </div>
 
-              <div class="field">
-                <label for="local_agendar">Local para agendar <span class="req">*</span></label>
-                <input type="text" id="local_agendar" name="local_agendar" required />
-              </div>
+    <div class="field">
+      <label for="a_local_agendar">Local para agendar <span class="req">*</span></label>
+      <input type="text" id="a_local_agendar" name="a_local_agendar" required />
+    </div>
 
-              <div class="field">
-                <label for="setor">Setor <span class="req">*</span></label>
-                <input type="text" id="setor" name="setor" required />
-              </div>
-            </div>
-          </section>
+    <div class="field">
+      <label for="a_setor">Setor <span class="req">*</span></label>
+      <input type="text" id="a_setor" name="a_setor" required />
+    </div>
+  </div>
+</section>
 
-          <!-- ====== OUTROS TIPOS (placeholder inicial) ====== -->
+
+          <!-- ====== PERIÓDICO ====== -->
           <section class="type-block" data-type="Periódico" hidden>
             <div class="grid-2">
               <div class="field">
                 <label for="p_funcionario">Nome do funcionário <span class="req">*</span></label>
                 <input type="text" id="p_funcionario" name="p_funcionario" />
               </div>
+
               <div class="field">
                 <label for="p_cpf">CPF <span class="req">*</span></label>
                 <input type="text" id="p_cpf" name="p_cpf" />
               </div>
+
               <div class="field">
                 <label for="p_empresa">Nome da empresa <span class="req">*</span></label>
                 <input type="text" id="p_empresa" name="p_empresa" />
               </div>
+
               <div class="field">
                 <label for="p_local">Local para agendar <span class="req">*</span></label>
                 <input type="text" id="p_local" name="p_local" />
               </div>
+
               <div class="field">
                 <label for="p_data">Data de preferência do exame <span class="req">*</span></label>
                 <input type="date" id="p_data" name="p_data" />
@@ -156,29 +166,235 @@
             </div>
           </section>
 
-          <section class="type-block" data-type="Demissional" hidden>
-            <p class="hint">Campos do Demissional serão implementados na próxima etapa (estrutura já pronta).</p>
-          </section>
+          <!-- ====== DEMISSIONAL ====== -->
+<section class="type-block" data-type="Demissional" hidden>
+  <div class="grid-2">
+    <div class="field">
+      <label for="d_funcionario">Nome do funcionário <span class="req">*</span></label>
+      <input type="text" id="d_funcionario" name="d_funcionario" />
+    </div>
 
-          <section class="type-block" data-type="Retorno ao Trabalho" hidden>
-            <p class="hint">Campos do Retorno ao Trabalho (com upload PDF) serão implementados na próxima etapa.</p>
-          </section>
+    <div class="field">
+      <label for="d_cpf">CPF <span class="req">*</span></label>
+      <input type="text" id="d_cpf" name="d_cpf" placeholder="000.000.000-00" />
+    </div>
 
-          <section class="type-block" data-type="Mudança de riscos ocupacionais" hidden>
-            <p class="hint">Campos de Mudança de riscos serão implementados na próxima etapa.</p>
-          </section>
+    <div class="field">
+      <label for="d_empresa">Nome da empresa <span class="req">*</span></label>
+      <input type="text" id="d_empresa" name="d_empresa" />
+    </div>
 
-          <section class="type-block" data-type="Avaliação médica" hidden>
-            <p class="hint">Campos de Avaliação médica (texto ou PDF) serão implementados na próxima etapa.</p>
-          </section>
+    <div class="field">
+      <label for="d_local">Local para agendar <span class="req">*</span></label>
+      <input type="text" id="d_local" name="d_local" />
+    </div>
 
-          {% if erro %}
-          <div class="msg error" role="alert">{{ erro }}</div>
-          {% endif %}
+    <div class="field">
+      <label for="d_data">Data de preferência do exame <span class="req">*</span></label>
+      <input type="date" id="d_data" name="d_data" />
+    </div>
+  </div>
+</section>
 
-          {% if sucesso %}
-          <div class="msg success" role="status">{{ sucesso }}</div>
-          {% endif %}
+         <!-- ====== RETORNO AO TRABALHO ====== -->
+<section class="type-block" data-type="Retorno ao Trabalho" hidden>
+  <div class="grid-2">
+    <div class="field">
+      <label for="r_funcionario">Nome do funcionário <span class="req">*</span></label>
+      <input type="text" id="r_funcionario" name="r_funcionario" />
+    </div>
+
+    <div class="field">
+      <label for="r_cpf">CPF <span class="req">*</span></label>
+      <input type="text" id="r_cpf" name="r_cpf" placeholder="000.000.000-00" />
+    </div>
+
+    <div class="field">
+      <label for="r_empresa">Nome da empresa <span class="req">*</span></label>
+      <input type="text" id="r_empresa" name="r_empresa" />
+    </div>
+
+    <div class="field">
+      <label for="r_local">Local para agendar <span class="req">*</span></label>
+      <input type="text" id="r_local" name="r_local" />
+    </div>
+
+    <div class="field">
+      <label for="r_data">Data de preferência do exame <span class="req">*</span></label>
+      <input type="date" id="r_data" name="r_data" />
+    </div>
+
+    <div class="field file-upload">
+  <label for="r_pdf">
+    Anexar atestado médico (PDF) <span class="req">*</span>
+  </label>
+
+  <p class="hint">
+    Anexar atestados médicos, histórico de afastados, alta médica ou do INSS;
+  </p>
+
+  <!-- input real (escondido) -->
+  <input type="file" id="r_pdf" name="r_pdf" accept="application/pdf,.pdf" />
+
+  <!-- botão centralizado -->
+  <label for="r_pdf" class="file-btn">Escolher arquivo</label>
+
+  <!-- nome do arquivo -->
+  <div class="file-name" id="r_pdf_name">Nenhum arquivo escolhido</div>
+</div>
+
+  </div>
+</section>
+
+
+ <!-- ====== MUDANÇA DE RISCOS OCUPACIONAIS ====== -->
+<section class="type-block" data-type="Mudança de riscos ocupacionais" hidden>
+  <div class="grid-2">
+    <div class="field">
+      <label for="m_funcionario">Nome do funcionário <span class="req">*</span></label>
+      <input type="text" id="m_funcionario" name="m_funcionario" />
+    </div>
+
+    <div class="field">
+      <label for="m_cpf">CPF <span class="req">*</span></label>
+      <input type="text" id="m_cpf" name="m_cpf" placeholder="000.000.000-00" />
+    </div>
+
+    <div class="field">
+      <label for="m_empresa">Nome da empresa <span class="req">*</span></label>
+      <input type="text" id="m_empresa" name="m_empresa" />
+    </div>
+
+    <div class="field">
+      <label for="m_local">Local para agendar <span class="req">*</span></label>
+      <input type="text" id="m_local" name="m_local" />
+    </div>
+
+    <div class="field">
+      <label for="m_data">Data de preferência do exame <span class="req">*</span></label>
+      <input type="date" id="m_data" name="m_data" />
+    </div>
+
+    <div class="field">
+      <label for="m_unidade_anterior">Unidade anterior <span class="req">*</span></label>
+      <input type="text" id="m_unidade_anterior" name="m_unidade_anterior" />
+    </div>
+
+    <div class="field">
+      <label for="m_setor_anterior">Setor anterior <span class="req">*</span></label>
+      <input type="text" id="m_setor_anterior" name="m_setor_anterior" />
+    </div>
+
+    <div class="field">
+      <label for="m_cargo_anterior">Cargo anterior <span class="req">*</span></label>
+      <input type="text" id="m_cargo_anterior" name="m_cargo_anterior" />
+    </div>
+
+    <div class="field">
+      <label for="m_unidade_atual">Unidade atual <span class="req">*</span></label>
+      <input type="text" id="m_unidade_atual" name="m_unidade_atual" />
+    </div>
+
+    <div class="field">
+      <label for="m_setor_atual">Setor atual <span class="req">*</span></label>
+      <input type="text" id="m_setor_atual" name="m_setor_atual" />
+    </div>
+
+    <div class="field">
+      <label for="m_cargo_atual">Cargo atual <span class="req">*</span></label>
+      <input type="text" id="m_cargo_atual" name="m_cargo_atual" />
+    </div>
+  </div>
+</section>
+
+
+
+         <!-- ====== AVALIAÇÃO MÉDICA ====== -->
+<section class="type-block" data-type="Avaliação médica" hidden>
+  <div class="field">
+    <label>Como deseja justificar a solicitação? <span class="req">*</span></label>
+
+ <div class="radio-row">
+  <label class="chk-option">
+    <input type="radio" name="am_forma" value="texto" checked />
+    <span class="chk-box" aria-hidden="true"></span>
+    <span class="radio-text">Texto explicativo</span>
+  </label>
+
+  <label class="chk-option">
+    <input type="radio" name="am_forma" value="pdf" />
+    <span class="chk-box" aria-hidden="true"></span>
+    <span class="radio-text">Anexo em PDF</span>
+  </label>
+</div>
+
+
+  </div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label for="am_funcionario">Nome do funcionário <span class="req">*</span></label>
+      <input type="text" id="am_funcionario" name="am_funcionario" />
+    </div>
+
+    <div class="field">
+      <label for="am_cpf">CPF <span class="req">*</span></label>
+      <input type="text" id="am_cpf" name="am_cpf" placeholder="000.000.000-00" />
+    </div>
+
+    <div class="field">
+      <label for="am_empresa">Nome da empresa <span class="req">*</span></label>
+      <input type="text" id="am_empresa" name="am_empresa" />
+    </div>
+
+    <div class="field">
+      <label for="am_local">Local para agendar <span class="req">*</span></label>
+      <input type="text" id="am_local" name="am_local" />
+    </div>
+
+    <div class="field">
+      <label for="am_data">Data de preferência do exame <span class="req">*</span></label>
+      <input type="date" id="am_data" name="am_data" />
+    </div>
+  </div>
+
+  <!-- TEXTO (padrão) -->
+  <div class="field am-text" data-am="texto">
+    <label for="am_justificativa">Justificativa (máx. 300 caracteres) <span class="req">*</span></label>
+    <textarea
+      id="am_justificativa"
+      name="am_justificativa"
+      maxlength="300"
+      rows="4"
+      placeholder="Descreva brevemente o motivo da solicitação..."
+    ></textarea>
+  </div>
+
+  <!-- PDF (Avaliação médica) -->
+<div class="field file-upload am-pdf" data-am="pdf" hidden>
+  <label for="am_pdf">Anexe justificativa em PDF <span class="req">*</span></label>
+
+  <!-- input real (escondido) -->
+  <input type="file" id="am_pdf" name="am_pdf" accept="application/pdf" />
+
+  <!-- botão centralizado -->
+  <label for="am_pdf" class="file-btn2">Escolher arquivo</label>
+
+  <!-- nome do arquivo -->
+  <div class="file-name2" id="am_pdf_name">Nenhum arquivo escolhido</div>
+</div>
+  </div>
+</section>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'danger' if category in ['erro','error'] else category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 
           <div class="actions">
             <button class="btn" type="submit">Enviar Solicitação</button>

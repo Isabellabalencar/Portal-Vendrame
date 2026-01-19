@@ -182,3 +182,221 @@ input:focus, select:focus{
   .actions{ justify-content: stretch; }
   .btn{ width: 100%; }
 }
+
+
+/* ================================
+   Upload (Retorno ao Trabalho)
+   Melhora visual do input file
+================================ */
+
+/* container */
+.field.file-upload{
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* hint */
+.field.file-upload .hint{
+  margin: 8px 0 12px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+/* esconde o input nativo */
+.field.file-upload input[type="file"]{
+  position: absolute;
+  left: -9999px;
+}
+
+/* botão custom centralizado */
+.field.file-upload .file-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 42px;
+  border-radius: 10px;
+  background: #0b2a6f;
+  color: #fff;
+  font-weight: 600;
+  margin-left: 110px;;
+  cursor: pointer;
+  user-select: none;
+  
+}
+
+/* botão custom centralizado */
+.field.file-upload .file-btn2{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 42px;
+  border-radius: 10px;
+  background: #0b2a6f;
+  color: #fff;
+  font-weight: 600;
+  margin: auto;
+  cursor: pointer;
+  user-select: none;
+  
+}
+
+/* hover/focus */
+.field.file-upload .file-btn:hover{
+  filter: brightness(1.06);
+}
+.field.file-upload .file-btn:active{
+  transform: translateY(1px);
+}
+
+/* nome do arquivo centralizado */
+.field.file-upload .file-name{
+  text-align: center;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.70);
+}
+
+/* nome do arquivo centralizado */
+.field.file-upload .file-name2{
+  text-align: left;
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.70);
+}
+
+
+/* ================================
+   Avaliação Médica - Radios (Texto/PDF)
+================================ */
+.radio-row{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+/* “card” */
+.radio-row .chk-option{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border:1px solid rgba(0,0,0,0.14);
+  border-radius:14px;
+  background: rgba(255,255,255,0.85);
+  cursor:pointer;
+  user-select:none;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  min-width:170px;
+}
+
+.radio-row .chk-option:hover{
+  border-color: rgba(11,42,111,0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+/* esconde o radio real */
+.radio-row .chk-option input[type="radio"]{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+/* quadradinho (checkbox fake) */
+.radio-row .chk-box{
+  width:18px;
+  height:18px;
+  border-radius:6px;                 /* ✅ quadrado arredondado */
+  border:2px solid rgba(11,42,111,0.35);
+  background:#fff;
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 18px;
+}
+
+/* “check” dentro */
+.radio-row .chk-box::after{
+  content:"";
+  width:9px;
+  height:5px;
+  border-left:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform: rotate(-45deg) scale(0);
+  transition: transform .12s ease;
+}
+
+/* selecionado */
+.radio-row .chk-option:has(input[type="radio"]:checked){
+  border-color: rgba(11,42,111,0.55);
+  box-shadow: 0 10px 24px rgba(11,42,111,0.10);
+  background: rgba(11,42,111,0.04);
+}
+
+.radio-row .chk-option:has(input[type="radio"]:checked) .chk-box{
+  background:#0b2a6f;
+  border-color:#0b2a6f;
+}
+
+.radio-row .chk-option:has(input[type="radio"]:checked) .chk-box::after{
+  transform: rotate(-45deg) scale(1);
+}
+
+.radio-row .radio-text{
+  font-weight:600;
+  color: rgba(0,0,0,0.78);
+  line-height:1.1;
+}
+
+@media (max-width:520px){
+  .radio-row .chk-option{
+    width:100%;
+    min-width:unset;
+  }
+}
+
+
+/* ================================
+   Avaliação Médica - Textarea (Justificativa)
+================================ */
+.field textarea {
+  width: 100%;
+  min-height: 130px;
+  resize: vertical;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.9);
+
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.82);
+
+  outline: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+/* placeholder mais suave */
+.field textarea::placeholder {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+/* foco (mesmo padrão do tema azul) */
+.field textarea:focus {
+  border-color: rgba(11, 42, 111, 0.50);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(11, 42, 111, 0.12);
+}
+
+/* erro (se você aplicar class="error" no textarea via JS/Flask) */
+.field textarea.error {
+  border-color: rgba(220, 38, 38, 0.55);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
+}
