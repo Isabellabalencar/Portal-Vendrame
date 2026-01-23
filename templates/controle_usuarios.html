@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Usuários | Portal Vendrame</title>
+
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='assets/icone.png') }}"
+      type="image/png"
+    />
+
+    <!-- JS externo (controle de dropdown + olho da senha) -->
+    <script defer src="{{ url_for('static', filename='js/controle_usuarios.js') }}"></script>
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/controle_usuarios.css') }}">
+  </head>
+
+  <body>
+    <!-- Topo -->
+    <header class="topbar">
+      <a class="back" href="{{ url_for('home_router.dashboard') }}">← Voltar</a>
+      <h1 class="title">Gerenciamento de Usuários</h1>
+      <div></div>
+    </header>
+
+    <main class="wrap">
+      <section class="card">
+
+        <!-- Seletor de ação -->
+        <div class="field">
+          <label class="label" for="acao">Selecione uma opção</label>
+          <select class="select" id="acao" name="acao">
+            <option value="add" selected>Adicionar usuário</option>
+            <option value="edit">Editar usuário</option>
+            <option value="remove">Remover usuário</option>
+            <option value="list">Listar usuários</option>
+          </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- =======================================================
+             BLOCO: ADICIONAR USUÁRIO
+        ======================================================== -->
+        <div class="form-block" data-form="add">
+          <h2 class="section-title">Adicionar Novo Usuário</h2>
+
+          <form method="POST" action="{{ url_for('users_admin.criar_usuario') }}">
+            <div class="field">
+              <label class="label" for="user">Usuário <span class="req">*</span></label>
+              <input
+                class="input"
+                type="text"
+                id="user"
+                name="user"
+                placeholder="Digite o nome de usuário"
+                required
+                autocomplete="username"
+              />
+            </div>
+
+            <div class="field">
+              <label class="label" for="password">Senha <span class="req">*</span></label>
+
+              <div class="password-wrap">
+                <input
+                  class="input"
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Digite a senha"
+                  required
+                  autocomplete="new-password"
+                />
+
+                <!-- mantém seu ID toggleEye para compatibilidade com o JS -->
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="toggleEye"
+                  aria-label="Mostrar senha"
+                  aria-pressed="false"
+                >
+                  <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="#64748b" stroke-width="2" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="#64748b" stroke-width="2"/>
+                  </svg>
+                  <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 3l18 18" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M10.6 10.6A3 3 0 0 0 12 15a3 3 0 0 0 2.4-4.4" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M5.6 5.6C3.6 7.1 2 9.3 2 12c0 0 3.5 7 10 7 1.3 0 2.5-.3 3.6-.7" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M18.4 18.4C20.4 16.9 22 14.7 22 12c0 0-3.5-7-10-7-1.3 0-2.5.3-3.6.7" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label class="label" for="email">Email (opcional)</label>
+                <input
+                  class="input"
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="exemplo@email.com"
+                  autocomplete="email"
+                />
+              </div>
+
+              <div class="field">
+                <label class="label" for="name">Nome (opcional)</label>
+                <input
+                  class="input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Nome completo do usuário"
+                  autocomplete="name"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="type">Tipo de Usuário <span class="req">*</span></label>
+              <select class="select" id="type" name="type" required>
+                <option value="administrador" selected>Administrador</option>
+                <option value="consultor">Consultor</option>
+                <option value="cliente">Cliente</option>
+              </select>
+            </div>
+
+            <div class="actions">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="msg {{ 'success' if category == 'success' else 'error' }}">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+
+              <button class="btn" type="submit">Adicionar Usuário</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- =======================================================
+     BLOCO: EDITAR USUÁRIO (EDITAR SENHA)
+======================================================== -->
+<div class="form-block" data-form="edit" hidden>
+  <h2 class="section-title">Editar Senha de Usuário</h2>
+
+  <form method="POST" action="{{ url_for('users_admin.editar_usuario') }}">
+    <div class="field">
+      <label class="label" for="edit_user">Usuário <span class="req">*</span></label>
+      <input
+        class="input"
+        type="text"
+        id="edit_user"
+        name="user"
+        placeholder="Digite o nome de usuário"
+        required
+        autocomplete="username"
+      />
+    </div>
+
+    <div class="field">
+      <label class="label" for="edit_password">Nova Senha <span class="req">*</span></label>
+
+      <div class="password-wrap">
+        <input
+          class="input"
+          type="password"
+          id="edit_password"
+          name="password"
+          placeholder="Digite a nova senha"
+          required
+          autocomplete="new-password"
+        />
+
+        <!-- ✅ olho (mesmo componente) -->
+        <button
+          type="button"
+          class="password-toggle"
+          data-toggle-eye="edit_password"
+          aria-label="Mostrar senha"
+          aria-pressed="false"
+        >
+          <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="#64748b" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="3" stroke="#64748b" stroke-width="2"/>
+          </svg>
+          <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M3 3l18 18" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10.6 10.6A3 3 0 0 0 12 15a3 3 0 0 0 2.4-4.4" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5.6 5.6C3.6 7.1 2 9.3 2 12c0 0 3.5 7 10 7 1.3 0 2.5-.3 3.6-.7" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18.4 18.4C20.4 16.9 22 14.7 22 12c0 0-3.5-7-10-7-1.3 0-2.5.3-3.6.7" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="actions">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="msg {{ 'success' if category == 'success' else 'error' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <button class="btn" type="submit">Atualizar Senha</button>
+    </div>
+  </form>
+</div>
+
+        <!-- =======================================================
+             BLOCO: REMOVER USUÁRIO
+        ======================================================== -->
+        <!-- FORM: Remover usuário -->
+<div class="form-block" data-form="remove" hidden>
+  <h2 class="section-title">Remover Usuário</h2>
+
+  <form method="POST" action="{{ url_for('users_admin.remover_usuario') }}">
+    <div class="field">
+      <label class="label" for="remove_user">Usuário <span class="req">*</span></label>
+      <input
+        class="input"
+        type="text"
+        id="remove_user"
+        name="user"
+        placeholder="Digite o nome de usuário a ser removido"
+        required
+        autocomplete="username"
+      />
+      <p class="hint">Atenção: essa ação é permanente.</p>
+    </div>
+
+    <div class="actions">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="msg {{ 'success' if category == 'success' else 'error' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <button class="btn btn-danger" type="submit">Remover Usuário</button>
+    </div>
+  </form>
+</div>
+        <!-- =======================================================
+             BLOCO: LISTAR USUÁRIOS
+        ======================================================== -->
+       <!-- FORM: Listar usuários -->
+<div class="form-block" data-form="list" hidden>
+  <h2 class="section-title">Lista de Usuários Cadastrados</h2>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="col-id">#</th>
+          <th>Usuário</th>
+          <th>Email</th>
+          <th>Nome</th>
+          <th class="col-type">Tipo</th>
+        </tr>
+      </thead>
+
+      <tbody id="usersTbody">
+        <tr id="usersEmpty">
+          <td colspan="5" class="empty">Carregando...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+      </section>
+    </main>
+  </body>
+</html>

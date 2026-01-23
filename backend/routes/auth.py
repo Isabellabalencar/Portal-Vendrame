@@ -32,7 +32,7 @@ def login():
             session["name"] = user["name"]
             session["email"] = user["email"]
 
-            return redirect(url_for("home.home"))
+            return redirect(url_for("home_router.dashboard"))
 
     return render_template("auth/login.html", erro=erro)
 

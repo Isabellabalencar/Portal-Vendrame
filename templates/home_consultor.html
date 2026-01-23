@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_consultor.css') }}" />
   </head>
 
   <body>
@@ -29,27 +29,15 @@
 
   <div class="actions">
   <!-- Card 1 -->
-  <a class="card card-image" href="{{ url_for('home_cliente.nova_solicitacao') }}">
+  <a class="card card-image" href="{{ url_for('home_consultor.solicitacoes_em_andamento') }}">
     <div class="card-media">
       <img
-        src="{{ url_for('static', filename='assets/solicitacoes.png') }}"
+        src="{{ url_for('static', filename='assets/andamento.png') }}"
         alt="Nova Solicitação"
       />
     </div>
     <span class="card-bar" aria-hidden="true"></span>
   </a>
-
-  <!-- Card 2 -->
-  <a class="card card-image" href="{{ url_for('minhas_solicitacoes.minhas_solicitacoes') }}">
-    <div class="card-media">
-      <img
-        src="{{ url_for('static', filename='assets/agendamentos.png') }}"
-        alt="Minhas Solicitações"
-      />
-    </div>
-    <span class="card-bar" aria-hidden="true"></span>
-  </a>
-</div>
 
 
         <footer class="footer">© 2026 Vendrame. Todos os direitos reservados.</footer>

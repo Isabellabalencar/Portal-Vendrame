@@ -29,10 +29,10 @@
 
   <div class="actions">
   <!-- Card 1 -->
-  <a class="card card-image" href="{{ url_for('home_cliente.nova_solicitacao') }}">
+  <a class="card card-image" href="{{ url_for('home_admin.solicitacoes_em_andamento_admin') }}">
     <div class="card-media">
       <img
-        src="{{ url_for('static', filename='assets/solicitacoes.png') }}"
+        src="{{ url_for('static', filename='assets/andamento.png') }}"
         alt="Nova Solicitação"
       />
     </div>
@@ -40,10 +40,10 @@
   </a>
 
   <!-- Card 2 -->
-  <a class="card card-image" href="{{ url_for('minhas_solicitacoes.minhas_solicitacoes') }}">
+  <a class="card card-image" href="{{ url_for('home_admin.controle_acessos') }}">
     <div class="card-media">
       <img
-        src="{{ url_for('static', filename='assets/agendamentos.png') }}"
+        src="{{ url_for('static', filename='assets/acessos.png') }}"
         alt="Minhas Solicitações"
       />
     </div>

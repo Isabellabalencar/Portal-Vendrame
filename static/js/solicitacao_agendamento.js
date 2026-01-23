@@ -4,16 +4,61 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
 
   // =====================================
-  // Remove mensagem de sucesso antiga
+  // Normaliza string (remove acentos) -> evita erro com "Avaliação médica" vs "avaliacao medica"
+  // =====================================
+  function normalize(s) {
+    return (s || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  // =====================================
+  // Remove SOMENTE mensagem de sucesso antiga (não remove erro)
   // =====================================
   function clearOldSuccess() {
-    document.querySelectorAll(".alert-success, .flash-success, .success").forEach((el) => el.remove());
+    document
+      .querySelectorAll(".alert.alert-success, .alert-success, .flash-success")
+      .forEach((el) => el.remove());
   }
 
   document.querySelectorAll("input, select, textarea").forEach((el) => {
     el.addEventListener("change", clearOldSuccess);
     el.addEventListener("input", clearOldSuccess);
   });
+
+  // =====================================
+  // Mostra nome do arquivo selecionado (genérico)
+  // - Você precisa ter no HTML um elemento (ex.: <small id="am_pdf_name"></small>)
+  // - Mesma lógica para Retorno ao Trabalho (ex.: <small id="rt_pdf_name"></small>)
+  // =====================================
+  function bindFileName(inputId, outputId, prefix = "Arquivo selecionado: ") {
+    const input = document.getElementById(inputId);
+    const out = document.getElementById(outputId);
+
+    if (!input || !out) return;
+
+    const update = () => {
+      const file = input.files && input.files.length > 0 ? input.files[0] : null;
+      out.textContent = file ? `${prefix}${file.name}` : "";
+    };
+
+    input.addEventListener("change", update);
+    update();
+
+    // devolve helpers para limpar quando você zerar o input
+    return {
+      clear: () => (out.textContent = ""),
+      update,
+    };
+  }
+
+  // IDs esperados:
+  // - Avaliação Médica: input#am_pdf e output#am_pdf_name
+  // - Retorno ao Trabalho: input#rt_pdf e output#rt_pdf_name (se o seu id for diferente, troque aqui)
+  const amFileUI = bindFileName("am_pdf", "am_pdf_name");
+  const rtFileUI = bindFileName("rt_pdf", "rt_pdf_name");
 
   // =====================================
   // Ativa/Desativa campos por bloco
@@ -28,7 +73,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Avaliação médica é controlada no toggle interno
       if (el.id === "am_justificativa" || el.id === "am_pdf") {
-        if (!isActive) el.required = false;
+        if (!isActive) {
+          el.required = false;
+          if (el.id === "am_pdf") {
+            el.value = "";
+            amFileUI?.clear?.();
+          }
+        }
+        return;
+      }
+
+      // Retorno ao Trabalho: se seu input de arquivo for rt_pdf, limpa ao desativar
+      if (el.id === "rt_pdf") {
+        if (!isActive) {
+          el.required = false;
+          el.value = "";
+          rtFileUI?.clear?.();
+        }
         return;
       }
 
@@ -53,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleBlocks() {
-    const tipo = select.value;
+    const tipo = select?.value || "";
 
     blocks.forEach((block) => {
       const isActive = block.dataset.type === tipo;
@@ -75,11 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const amPdf = document.getElementById("am_pdf");
 
   function isAvaliacaoAtiva() {
-    return (select?.value || "") === "Avaliação médica";
+    // robusto contra acento/maiúscula
+    return normalize(select?.value) === "avaliacao medica";
   }
 
   function applyAvaliacaoMedica() {
-    const modo = document.querySelector('input[name="am_forma"]:checked')?.value || "";
+    const modo =
+      document.querySelector('input[name="am_forma"]:checked')?.value || "";
     const isTexto = modo === "texto";
     const isPdf = modo === "pdf";
 
@@ -95,14 +158,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (amPdf) {
       amPdf.disabled = !isPdf;
       amPdf.required = isPdf;
-      if (!isPdf) amPdf.value = "";
+
+      // se não for PDF, limpa o arquivo e também o nome exibido
+      if (!isPdf) {
+        amPdf.value = "";
+        amFileUI?.clear?.();
+      } else {
+        // se for PDF, atualiza o label (caso algo já esteja selecionado)
+        amFileUI?.update?.();
+      }
     }
   }
 
   function safeApplyAvaliacaoMedica() {
     if (!isAvaliacaoAtiva()) {
-      if (txt) { txt.required = false; txt.disabled = true; }
-      if (amPdf) { amPdf.required = false; amPdf.disabled = true; }
+      if (txt) {
+        txt.required = false;
+        txt.disabled = true;
+      }
+      if (amPdf) {
+        amPdf.required = false;
+        amPdf.disabled = true;
+        amPdf.value = "";
+        amFileUI?.clear?.();
+      }
       if (boxTexto) boxTexto.hidden = true;
       if (boxPdf) boxPdf.hidden = true;
       return;
@@ -119,13 +198,25 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", (e) => {
       if (!isAvaliacaoAtiva()) return;
 
-      const modo = document.querySelector('input[name="am_forma"]:checked')?.value || "";
+      const modo =
+        document.querySelector('input[name="am_forma"]:checked')?.value || "";
+
       if (modo === "pdf") {
         const temArquivo = amPdf && amPdf.files && amPdf.files.length > 0;
+
         if (!temArquivo) {
           e.preventDefault();
           alert("❌ Para 'Anexo em PDF', você precisa anexar um arquivo PDF.");
-          if (amPdf) amPdf.focus();
+          amPdf?.focus();
+          return;
+        }
+
+        // valida extensão no client-side também (opcional, mas ajuda)
+        const fileName = (amPdf.files[0]?.name || "").toLowerCase();
+        if (fileName && !fileName.endsWith(".pdf")) {
+          e.preventDefault();
+          alert("❌ O anexo precisa ser um PDF.");
+          amPdf?.focus();
           return;
         }
       }
@@ -134,6 +225,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // init
   toggleBlocks();
-  select.addEventListener("change", toggleBlocks);
+  select?.addEventListener("change", toggleBlocks);
   safeApplyAvaliacaoMedica();
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("r_pdf");
+  const nameBox = document.getElementById("r_pdf_name");
+
+  if (!input || !nameBox) return;
+
+  function updateFileName() {
+    const file = input.files && input.files.length > 0 ? input.files[0] : null;
+    nameBox.textContent = file ? file.name : "Nenhum arquivo escolhido";
+  }
+
+  input.addEventListener("change", updateFileName);
+
+  // garante estado inicial
+  updateFileName();
 });

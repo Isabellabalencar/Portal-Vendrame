@@ -1,0 +1,203 @@
+:root{
+  --bg:#f3f4f6;
+  --text:#0f172a;
+  --muted:#64748b;
+  --primary:#052d85;
+  --card:#fff;
+  --border:#e5e7eb;
+  --shadow:0 18px 45px rgba(15,23,42,.10);
+  --radius:16px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;color:var(--text);background:var(--bg)}
+
+.topbar{
+  height:96px;
+  display:grid;
+  grid-template-columns:120px 1fr 120px;
+  align-items:center;
+  padding:0 28px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+}
+.back{color:var(--primary);text-decoration:none;font-weight:600}
+.back:hover{text-decoration:underline}
+
+.brand{display:grid;justify-items:center;gap:8px}
+.logo{height:26px;opacity:.85}
+.brand h1{margin:0;font-size:30px;color:var(--primary);font-weight:800}
+
+.page{padding:22px 26px 40px;display:grid;gap:18px;place-items:start center}
+
+.filters{
+  width:100%;
+  max-width:1100px;
+  display:grid;
+  grid-template-columns:1.1fr 1fr 1fr 1fr;
+  gap:14px;
+  align-items:end;
+}
+
+/* labels (serve para .f e .filter) */
+.f label,
+.filter label{
+  display:block;
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  margin:0 0 8px;
+}
+
+/* inputs/selects (serve para .f e também para o #q do buscar) */
+.f input,.f select,
+.filter input,.filter select{
+  width:100%;
+  height:46px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  padding:0 14px;
+  font-size:14px;
+  outline:none;
+}
+
+.f input:focus,.f select:focus,
+.filter input:focus,.filter select:focus{
+  border-color:rgba(5,45,133,.55);
+  box-shadow:0 0 0 4px rgba(5,45,133,.12);
+}
+
+.search{position:relative}
+.search .ico{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.search input{padding-left:38px}
+
+.list{width:100%;max-width:1100px;display:grid;gap:14px}
+
+.req-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.req-head{
+  padding:16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border:1px solid rgba(5,45,133,.55);
+  border-radius:18px;
+  margin:14px;
+}
+.proto{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.proto .lbl{color:var(--muted);font-weight:600;font-size:13px}
+.proto .val{font-weight:800;color:var(--primary);font-size:13px}
+
+.badge{
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  border:1px solid transparent;
+}
+
+/* status */
+.badge-em-aberto{
+  background:rgba(220,38,38,.10);
+  color:#991b1b;
+  border-color:rgba(220,38,38,.22)
+}
+.badge-em-andamento{
+  background:rgba(245,158,11,.14);
+  color:#92400e;
+  border-color:rgba(245,158,11,.25)
+}
+
+/* antes você tinha "concluido" – agora é "finalizado" */
+.badge-finalizado{
+  background:rgba(22,163,74,.12);
+  color:#166534;
+  border-color:rgba(22,163,74,.24)
+}
+
+/* "Não Aprovado" — se no HTML virar badge-não-aprovado */
+.badge-não-aprovado{
+  background:rgba(220,38,38,.08);
+  color:#991b1b;
+  border-color:rgba(220,38,38,.20)
+}
+/* alternativa segura caso você normalize no HTML para "nao-aprovado" */
+.badge-nao-aprovado{
+  background:rgba(220,38,38,.08);
+  color:#991b1b;
+  border-color:rgba(220,38,38,.20)
+}
+
+.toggle{
+  border:0;background:transparent;
+  color:var(--primary);
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.chev{transition:transform .12s ease}
+.toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+
+.req-body{padding:18px 26px 22px}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:14px 26px;
+  margin-top:10px;
+}
+.item span{color:var(--muted);font-size:12px}
+.item strong{display:block;margin-top:2px;font-size:13px}
+
+.docs{margin-top:14px}
+.docs-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:13px;color:var(--text)}
+.docs-list{margin:10px 0 0 22px;padding:0;display:grid;gap:6px}
+.docs-list a{color:var(--primary);text-decoration:none;font-weight:600}
+.docs-list a:hover{text-decoration:underline}
+.docs-empty{margin:10px 0 0 22px;color:var(--muted);font-size:12px}
+
+.actions{margin-top:16px;display:flex;justify-content:flex-end}
+.btn{
+  height:44px;min-width:120px;
+  border-radius:12px;border:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:0 16px;font-weight:800;cursor:pointer;text-decoration:none
+}
+.btn-outline{
+  background:var(--primary);color:#fff;
+  box-shadow:0 14px 28px rgba(5,45,133,.22);
+}
+
+.empty-state{
+  background:#fff;border:1px solid var(--border);
+  border-radius:16px;padding:18px;
+  color:var(--muted);box-shadow:var(--shadow);
+}
+
+@media (max-width: 980px){
+  .filters{grid-template-columns:1fr 1fr;max-width:900px}
+  .grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width: 640px){
+  .topbar{grid-template-columns:90px 1fr 10px;padding:0 16px}
+  .brand h1{font-size:22px}
+  .filters{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .req-head{margin:12px}
+}

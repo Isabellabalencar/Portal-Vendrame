@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minhas Solicitações | Portal Vendrame</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='assets/icone.png') }}" type="image/png" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/minhas_solicitacoes.css') }}" />
+    <script defer src="{{ url_for('static', filename='js/minhas_solicitacoes.js') }}"></script>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="back" href="{{ url_for('home_router.dashboard') }}">← Voltar</a>
+      <div class="brand">
+        <h1>Minhas Solicitações</h1>
+      </div>
+      <div></div>
+    </header>
+
+    <main class="page">
+      <!-- filtros -->
+      <section class="filters">
+        <!-- 1) Buscar por nome ou CPF -->
+        <div class="filter">
+          <label for="q">Buscar</label>
+          <div class="search">
+            <span class="ico" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="#64748b" stroke-width="2"/>
+                <path d="M20 20l-3.5-3.5" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+
+            <input
+              type="text"
+              id="q"
+              placeholder="Pesquisar por nome ou CPF"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <!-- Tipo -->
+        <div class="f">
+          <label for="f_tipo">Selecione o Tipo de Exame</label>
+          <select id="f_tipo">
+            <option value="Todos" selected>Todos</option>
+            {% for t in tipos %}
+              <option value="{{ t }}">{{ t }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Protocolo -->
+        <div class="f">
+          <label for="f_protocolo">Selecione o protocolo</label>
+          <select id="f_protocolo">
+            <option value="Todos" selected>Todos</option>
+            {% for p in protocolos %}
+              <option value="{{ p }}">{{ p }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Status fixos -->
+        <div class="f">
+          <label for="f_status">Selecione o Status</label>
+          <select id="f_status">
+            <option value="Todos" selected>Todos</option>
+            <option value="Em Aberto">Em Aberto</option>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Finalizado">Finalizado</option>
+            <option value="Não Aprovado">Não Aprovado</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- lista -->
+      <section class="list" id="list">
+        {% for s in solicitacoes %}
+        <article
+          class="req-card"
+          data-user="{{ (s.funcionario or '')|lower }}"
+          data-cpf="{{ (s.cpf or '')|lower }}"
+          data-tipo="{{ (s.tipo_exame or '')|lower }}"
+          data-proto="{{ (s.protocolo or '')|lower }}"
+          data-status="{{ (s.status or '')|lower }}"
+        >
+          <div class="req-head">
+            <div class="proto">
+              <span class="lbl">Protocolo:</span>
+              <span class="val">{{ s.protocolo }}</span>
+
+              {% if s.status %}
+                <span class="badge badge-{{ (s.status or '')|lower|replace(' ','-') }}">
+                  {{ s.status }}
+                </span>
+              {% endif %}
+            </div>
+
+            <button class="toggle" type="button" aria-expanded="false">
+              Detalhes
+              <span class="chev" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 9l6 6 6-6" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="req-body" hidden>
+            <div class="grid">
+              {% set tipo = (s.tipo_exame or '')|lower %}
+
+              {% if tipo == 'admissional' %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Unidade:</span> <strong>{{ s.unidade or "-" }}</strong></div>
+
+                <div class="item"><span>Centro de custo:</span> <strong>{{ s.centro_custo or "-" }}</strong></div>
+                <div class="item"><span>Código RH:</span> <strong>{{ s.codigo_rh or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+
+                <div class="item"><span>Funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>RG:</span> <strong>{{ s.rg or "-" }}</strong></div>
+
+                <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>CNPJ:</span> <strong>{{ s.cnpj or "-" }}</strong></div>
+
+                <div class="item"><span>Nascimento:</span> <strong>{{ s.nascimento or "-" }}</strong></div>
+                <div class="item"><span>Admissão:</span> <strong>{{ s.admissao or "-" }}</strong></div>
+                <div class="item"><span>Função:</span> <strong>{{ s.funcao or "-" }}</strong></div>
+
+                <div class="item"><span>Setor:</span> <strong>{{ s.setor or "-" }}</strong></div>
+
+              {% elif tipo == 'avaliação médica' or tipo == 'avaliacao medica' %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+
+                <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+
+                {% if s.forma_justificativa %}
+                  <div class="item"><span>Forma da justificativa:</span> <strong>{{ s.forma_justificativa }}</strong></div>
+                {% endif %}
+
+                {% if (s.forma_justificativa or '')|lower == 'texto' and s.justificativa_texto %}
+                  <div class="item"><span>Justificativa:</span> <strong>{{ s.justificativa_texto }}</strong></div>
+                {% endif %}
+
+                {% if s.nome_arquivo %}
+                  <div class="item"><span>Arquivo enviado:</span> <strong>{{ s.nome_arquivo }}</strong></div>
+                {% endif %}
+
+              {% elif tipo == 'demissional' %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+
+                <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+
+              {% elif tipo == 'mudança de riscos' or tipo == 'mudanca de riscos' %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+
+                <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+
+                <div class="item"><span>Unidade anterior:</span> <strong>{{ s.unidade_anterior or "-" }}</strong></div>
+                <div class="item"><span>Setor anterior:</span> <strong>{{ s.setor_anterior or "-" }}</strong></div>
+                <div class="item"><span>Cargo anterior:</span> <strong>{{ s.cargo_anterior or "-" }}</strong></div>
+
+                <div class="item"><span>Unidade atual:</span> <strong>{{ s.unidade_atual or "-" }}</strong></div>
+                <div class="item"><span>Setor atual:</span> <strong>{{ s.setor_atual or "-" }}</strong></div>
+                <div class="item"><span>Cargo atual:</span> <strong>{{ s.cargo_atual or "-" }}</strong></div>
+
+              {% elif tipo == 'periódico' or tipo == 'periodico' %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+
+                <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+
+              {% elif tipo == 'retorno ao trabalho' or tipo == 'retorno_trabalho' or tipo == 'retorno trabalho' %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+
+                <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+
+                {% if s.rt_nome_arquivo %}
+                  <div class="item"><span>Arquivo enviado:</span> <strong>{{ s.rt_nome_arquivo }}</strong></div>
+                {% endif %}
+
+              {% else %}
+
+                <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
+                <div class="item"><span>Nome da empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
+                <div class="item"><span>Nome do funcionário:</span> <strong>{{ s.funcionario or "-" }}</strong></div>
+
+                <div class="item"><span>Telefone:</span> <strong>{{ s.telefone or "-" }}</strong></div>
+                <div class="item"><span>Local para agendar:</span> <strong>{{ s.local_agendar or "-" }}</strong></div>
+                <div class="item"><span>Data de preferência do exame:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
+
+                <div class="item"><span>CPF:</span> <strong>{{ s.cpf or "-" }}</strong></div>
+                <div class="item"><span>RG:</span> <strong>{{ s.rg or "-" }}</strong></div>
+                <div class="item"><span>Profissional:</span> <strong>{{ s.profissional or "-" }}</strong></div>
+
+              {% endif %}
+            </div>
+
+            <div class="docs">
+              <div class="docs-title">
+                <input type="checkbox" checked disabled />
+                <span>Documentos anexados (clique para baixar)</span>
+              </div>
+
+              {% if s.documentos and s.documentos|length > 0 %}
+                <ul class="docs-list">
+                  {% for d in s.documentos %}
+                    <li>
+                      {% if d.stored_name == '__avaliacao_db__' %}
+                        <a href="{{ url_for('minhas_solicitacoes.baixar_documento_avaliacao', protocolo=s.protocolo) }}">
+                          {{ d.filename }}
+                        </a>
+
+                      {% elif d.stored_name == '__retorno_db__' %}
+                        <a href="{{ url_for('minhas_solicitacoes.baixar_documento_retorno', protocolo=s.protocolo) }}">
+                          {{ d.filename }}
+                        </a>
+
+                      {% else %}
+                        <a href="{{ url_for('minhas_solicitacoes.baixar_documento', protocolo=s.protocolo, stored_name=d.stored_name) }}">
+                          {{ d.filename }}
+                        </a>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="docs-empty">Nenhum documento anexado</p>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+        {% else %}
+          <div class="empty-state" id="emptyState">Nenhuma solicitação encontrada.</div>
+        {% endfor %}
+      </section>
+    </main>
+  </body>
+</html>
