@@ -94,4 +94,4 @@ if __name__ == "__main__":
     main()
 
 #executar
-#python "C:\Users\Isabella Alencar\Documents\GRUPO EBG\VENDRAME - NEW FRONTEND\database\clear_periodico.py" --db "C:\Users\Isabella Alencar\Documents\GRUPO EBG\VENDRAME - NEW FRONTEND\database\Users.db" --base-pastas "C:\Users\Isabella Alencar\Documents\GRUPO EBG\VENDRAME - NEW FRONTEND\database\Documentos_Periodico"
+# python "C:\Users\Isabella Alencar\Documents\GRUPO EBG\VENDRAME - NEW FRONTEND\database\clear_periodico.py" --db "C:\Users\Isabella Alencar\Documents\GRUPO EBG\VENDRAME - NEW FRONTEND\database\Users.db" --base-pastas "C:\Users\Isabella Alencar\Documents\GRUPO EBG\VENDRAME - NEW FRONTEND\database\Documentos_Periodico"

@@ -1,0 +1,553 @@
+/* static/css/solicitacoes_consultor.css */
+:root{
+  --bg:#f3f4f6;
+  --text:#0f172a;
+  --muted:#64748b;
+  --primary:#052d85;
+  --card:#fff;
+  --border:#e5e7eb;
+  --shadow:0 18px 45px rgba(15,23,42,.10);
+  --radius:16px;
+
+  --danger:#dc2626;
+  --warn:#f59e0b;
+  --ok:#16a34a;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;color:var(--text);background:var(--bg)}
+
+.topbar{
+  height:96px;
+  display:grid;
+  grid-template-columns:120px 1fr 120px;
+  align-items:center;
+  padding:0 28px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+}
+.back{color:var(--primary);text-decoration:none;font-weight:600}
+.back:hover{text-decoration:underline}
+
+.brand{display:grid;justify-items:center;gap:8px}
+.brand h1{margin:0;font-size:30px;color:var(--primary);font-weight:800}
+
+.page{padding:22px 26px 40px;display:grid;gap:18px;place-items:start center}
+
+.filters{
+  width:100%;
+  max-width:1100px;
+  display:grid;
+  grid-template-columns:1.1fr 1fr 1fr 1fr;
+  gap:14px;
+  align-items:end;
+}
+
+/* labels */
+.f label,
+.filter label{
+  display:block;
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  margin:0 0 8px;
+}
+
+/* inputs/selects */
+.f input,.f select,
+.filter input,.filter select{
+  width:100%;
+  height:46px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  padding:0 14px;
+  font-size:14px;
+  outline:none;
+}
+.f input:focus,.f select:focus,
+.filter input:focus,.filter select:focus{
+  border-color:rgba(5,45,133,.55);
+  box-shadow:0 0 0 4px rgba(5,45,133,.12);
+}
+
+.search{position:relative}
+.search .ico{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.search input{padding-left:38px}
+
+.list{width:100%;max-width:1100px;display:grid;gap:14px}
+
+.req-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+/* Cabeçalho do card (com borda azul como no seu padrão) */
+.req-head{
+  padding:16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border:1px solid rgba(5,45,133,.55);
+  border-radius:18px;
+  margin:14px;
+}
+.proto{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.proto .lbl{color:var(--muted);font-weight:600;font-size:13px}
+.proto .val{font-weight:800;color:var(--primary);font-size:13px}
+
+.badge{
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  border:1px solid transparent;
+}
+
+/* status */
+.badge-em-aberto{
+  background:rgba(220,38,38,.10);
+  color:#991b1b;
+  border-color:rgba(220,38,38,.22)
+}
+.badge-em-andamento{
+  background:rgba(245,158,11,.14);
+  color:#92400e;
+  border-color:rgba(245,158,11,.25)
+}
+.badge-finalizado{
+  background:rgba(22,163,74,.12);
+  color:#166534;
+  border-color:rgba(22,163,74,.24)
+}
+/* suporte a "não-aprovado" */
+.badge-não-aprovado,
+.badge-nao-aprovado{
+  background:rgba(220,38,38,.08);
+  color:#991b1b;
+  border-color:rgba(220,38,38,.20)
+}
+
+.toggle{
+  border:0;background:transparent;
+  color:var(--primary);
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.chev{transition:transform .12s ease}
+.toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+
+/* ✅ garante que o corpo ocupe toda a largura do card */
+.req-body{
+  padding:18px 26px 22px;
+  width:100%;
+}
+
+/* ✅ grade do corpo: 3 colunas por padrão (igual ao layout esperado) */
+.grid{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:14px 26px;
+  margin-top:10px;
+}
+
+/* mantém compatibilidade se você usar classes extras */
+.grid-3{grid-template-columns:repeat(3, minmax(0, 1fr))}
+
+.item span{color:var(--muted);font-size:12px}
+.item strong{
+  display:block;
+  margin-top:2px;
+  font-size:13px;
+  font-weight:700;
+  word-break:break-word;
+}
+
+/* Documentos */
+.docs{margin-top:14px}
+.docs-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  font-size:13px;
+  color:var(--text)
+}
+.docs-title input{transform:translateY(1px)}
+.docs-list{margin:10px 0 0 22px;padding:0;display:grid;gap:6px}
+.docs-list li{list-style:disc}
+.docs-list a{color:var(--primary);text-decoration:none;font-weight:600}
+.docs-list a:hover{text-decoration:underline}
+.docs-empty{margin:10px 0 0 22px;color:var(--muted);font-size:12px}
+
+/* ✅ Atualizar status (layout como a imagem: select grande + botão ao lado) */
+.status-box{
+  margin-top:18px;
+  padding:14px 14px 12px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 12px 24px rgba(15,23,42,.08);
+}
+.status-title{
+  font-weight:800;
+  color:var(--text);
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+/* troca flex por grid pra ficar sempre alinhado */
+.status-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+}
+
+.status-select{
+  width:100%;
+  height:46px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  padding:0 14px;
+  font-size:14px;
+  outline:none;
+}
+.status-select:focus{
+  border-color:rgba(5,45,133,.55);
+  box-shadow:0 0 0 4px rgba(5,45,133,.12);
+}
+
+.btn-save{
+  height:46px;
+  padding:0 16px;
+  min-width:110px;
+  border-radius:12px;
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  white-space:nowrap;
+  box-shadow:0 14px 28px rgba(5,45,133,.22);
+}
+.btn-save:hover{filter:brightness(.97)}
+.btn-save:disabled{opacity:.65;cursor:not-allowed}
+
+.status-hint{
+  margin:10px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+
+.btn-save-avaliacao{
+  height:46px;
+  padding:0 16px;
+  min-width:110px;
+  border-radius:12px;
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  white-space:nowrap;
+  box-shadow:0 14px 28px rgba(5,45,133,.22);
+}
+.btn-save-avaliacao:hover{filter:brightness(.97)}
+.btn-save-avaliacao:disabled{opacity:.65;cursor:not-allowed}
+
+.btn-save-status{
+  height:46px;
+  padding:0 16px;
+  min-width:110px;
+  border-radius:12px;
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  white-space:nowrap;
+  box-shadow:0 14px 28px rgba(5,45,133,.22);
+}
+.btn-save-status:hover{filter:brightness(.97)}
+.btn-save-status:disabled{opacity:.65;cursor:not-allowed}
+
+
+/* ==================================================
+   ✅ Orientações + Upload (quando status = Finalizado)
+   Classes esperadas no HTML:
+   - .consultor-avaliacao
+   - .section-title
+   - .field
+   - .req
+   - .helper
+   - .upload-box / .upload-top / .upload-actions
+   - .upload-btn / .upload-filename
+   - .consultor-file
+   - .upload-drop / .up-ico / .up-title / .up-sub
+   - .consultor-actions / .btn-eval
+   ================================================== */
+.consultor-avaliacao{
+  margin-top:16px;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 12px 24px rgba(15,23,42,.06);
+}
+
+.consultor-avaliacao .section-title{
+  margin:0 0 12px;
+  font-size:13px;
+  font-weight:900;
+  color:var(--text);
+}
+
+.consultor-avaliacao .field{
+  margin-top:14px;
+}
+
+.consultor-avaliacao .field:first-of-type{
+  margin-top:0;
+}
+
+.consultor-avaliacao label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  margin:0 0 8px;
+}
+
+.consultor-avaliacao .req{
+  color:var(--danger);
+  font-weight:900;
+  margin-left:2px;
+}
+
+.consultor-avaliacao textarea{
+  width:100%;
+  min-height:120px;
+  resize:vertical;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fff;
+  padding:12px 14px;
+  font-size:14px;
+  line-height:1.35;
+  outline:none;
+}
+.consultor-avaliacao textarea:focus{
+  border-color:rgba(5,45,133,.55);
+  box-shadow:0 0 0 4px rgba(5,45,133,.12);
+}
+
+.consultor-avaliacao .helper{
+  margin:8px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* upload box */
+.upload-box{
+  border:1px dashed rgba(100,116,139,.45);
+  border-radius:14px;
+  padding:14px;
+  background:linear-gradient(0deg, rgba(2,8,23,.02), rgba(2,8,23,.02));
+}
+
+.upload-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+
+.upload-filename{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.upload-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.upload-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:40px;
+  padding:0 12px;
+  border-radius:10px;
+  border:1px solid rgba(5,45,133,.22);
+  background:#fff;
+  color:var(--primary);
+  font-weight:800;
+  cursor:pointer;
+  text-decoration:none;
+}
+.upload-btn:hover{background:rgba(5,45,133,.04)}
+.upload-btn:active{transform:translateY(1px)}
+
+/* input file escondido e seguro */
+.consultor-file{
+  position:absolute;
+  width:1px;height:1px;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  white-space:nowrap;
+  border:0;
+  padding:0;
+  margin:-1px;
+}
+
+.upload-drop{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:8px;
+  padding:18px 10px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid rgba(229,231,235,.75);
+}
+
+.upload-drop .up-ico{
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  border-radius:10px;
+  background:rgba(5,45,133,.06);
+  color:var(--primary);
+}
+
+.upload-drop .up-title{
+  font-size:13px;
+  font-weight:800;
+  color:var(--text);
+  text-align:center;
+}
+
+.upload-drop .up-sub{
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+  max-width:520px;
+}
+
+/* botão salvar avaliação */
+.consultor-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.btn-eval{
+  height:46px;
+  padding:0 18px;
+  border-radius:12px;
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 14px 28px rgba(5,45,133,.22);
+}
+.btn-eval:hover{filter:brightness(.97)}
+.btn-eval:disabled{opacity:.65;cursor:not-allowed}
+
+/* ações */
+.actions{margin-top:16px;display:flex;justify-content:flex-end}
+.btn{
+  height:44px;min-width:120px;
+  border-radius:12px;border:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:0 16px;font-weight:800;cursor:pointer;text-decoration:none
+}
+.btn-outline{
+  background:var(--primary);color:#fff;
+  box-shadow:0 14px 28px rgba(5,45,133,.22);
+}
+
+.empty-state{
+  background:#fff;border:1px solid var(--border);
+  border-radius:16px;padding:18px;
+  color:var(--muted);box-shadow:var(--shadow);
+}
+
+@media (max-width: 980px){
+  .filters{grid-template-columns:1fr 1fr;max-width:900px}
+  .grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
+  .grid-3{grid-template-columns:repeat(2, minmax(0, 1fr))}
+  .status-row{grid-template-columns:1fr}
+  .btn-save{width:100%}
+
+  .consultor-actions{justify-content:stretch}
+  .btn-eval{width:100%}
+}
+
+@media (max-width: 640px){
+  .topbar{grid-template-columns:90px 1fr 10px;padding:0 16px}
+  .brand h1{font-size:22px}
+  .filters{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr}
+  .req-head{margin:12px}
+
+  .upload-top{flex-direction:column;align-items:flex-start}
+  .upload-actions{width:100%}
+  .upload-btn{width:100%}
+}
+
+
+/* Mensagem de retorno dentro do card (abaixo da finalização) */
+.final-msg{
+  margin-top: 12px;          /* ✅ margem no topo */
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+/* sucesso (CONFIRMAÇÃO) — cor alterada */
+.final-msg.is-ok{
+  background: rgba(22, 163, 74, .12);   /* ✅ verde suave */
+  color: #166534;                       /* ✅ verde escuro */
+  border-color: rgba(22, 163, 74, .28);
+}
+
+/* erro */
+.final-msg.is-err{
+  background: rgba(220, 38, 38, .10);
+  color: #991b1b;
+  border-color: rgba(220, 38, 38, .22);
+}
+
+/* (opcional) aviso, se você usar no futuro */
+.final-msg.is-warn{
+  background: rgba(245, 158, 11, .12);
+  color: #92400e;
+  border-color: rgba(245, 158, 11, .25);
+}

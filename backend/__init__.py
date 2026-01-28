@@ -9,6 +9,7 @@ from backend.routes.home_consultor import home_consultor_bp
 from backend.routes.home_admin import home_admin_bp
 from backend.routes.users_admin import users_admin_bp
 from backend.routes.minhas_solicitacoes import minhas_solicitacoes_bp
+from backend.routes.solicitacoes_consultor import solicitacoes_consultor_bp
 
 
 # ✅ novo arquivo de rotas
@@ -31,6 +32,7 @@ def create_app():
     app.register_blueprint(home_admin_bp)
     app.register_blueprint(sol_agendamento_bp)
     app.register_blueprint(minhas_solicitacoes_bp)
+    app.register_blueprint(solicitacoes_consultor_bp)
 
 
     # ✅ novo

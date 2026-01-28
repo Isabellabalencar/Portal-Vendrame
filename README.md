@@ -27,6 +27,7 @@ VENDRAME - NEW FRONTEND/
 │
 ├── app.py
 ├── requirements.txt
+├── README.md
 ├── .env
 ├── .gitignore
 │
@@ -36,27 +37,88 @@ VENDRAME - NEW FRONTEND/
 │   └── routes/
 │       ├── __init__.py
 │       ├── auth.py
-│       └── home.py
+│       ├── home.py
+│       ├── home_admin.py
+│       ├── home_consultor.py
+│       ├── home_router.py
+│       ├── minhas_solicitacoes.py
+│       ├── solicitacao_agendamento.py
+│       ├── solicitacoes_consultor.py
+│       └── users_admin.py
 │
 ├── database/
+│   ├── Users.db
 │   ├── init_db.py
-│   └── Users.db
+│   ├── clear_admissional.py
+│   ├── clear_periodico.py
+│   ├── create_table_admissional.py
+│   ├── create_table_avaliacao.py
+│   ├── create_table_demissional.py
+│   ├── create_table_mudanca.py
+│   ├── create_table_periodico.py
+│   ├── create_table_retorno.py
+│   ├── migration_add_resposta_consultor.py
+│   │
+│   ├── Documentos_Admissional/
+│   │   └── <PROTOCOLO>/
+│   │       └── arquivos...
+│   ├── Documentos_Avaliacao/
+│   │   └── <PROTOCOLO>/
+│   │       └── arquivos...
+│   ├── Documentos_Demissional/
+│   │   └── <PROTOCOLO>/
+│   │       └── arquivos...
+│   ├── Documentos_Mudanca/
+│   │   └── <PROTOCOLO>/
+│   │       └── arquivos...
+│   ├── Documentos_Periodico/
+│   │   └── <PROTOCOLO>/
+│   │       └── arquivos...
+│   └── Documentos_Retorno/
+│       └── <PROTOCOLO>/
+│           └── arquivos...
 │
 ├── static/
 │   ├── assets/
+│   │   ├── acessos.png
+│   │   ├── agendamentos.png
+│   │   ├── andamento.png
+│   │   ├── comparecimento.png
 │   │   ├── icone.png
 │   │   ├── login_bg.jpg
-│   │   └── logo_vendrame.png
+│   │   ├── logo_vendrame.png
+│   │   ├── solicitacao.png
+│   │   └── solicitacoes.png
+│   │
 │   ├── css/
-│   │   └── login.css
+│   │   ├── controle_usuarios.css
+│   │   ├── home_consultor.css
+│   │   ├── home.css
+│   │   ├── login.css
+│   │   ├── minhas_solicitacoes.css
+│   │   ├── solicitacao_agendamento.css
+│   │   ├── solicitacoes_consultor.css
+│   │   └── tipos_solicitacao.css
+│   │
 │   └── js/
-│       └── login.js
+│       ├── controle_usuarios.js
+│       ├── login.js
+│       ├── minhas_solicitacoes.js
+│       ├── solicitacao_agendamento.js
+│       └── solicitacoes_consultor.js
 │
 └── templates/
     ├── home.html
+    ├── home_admin.html
+    ├── home_consultor.html
+    ├── minhas_solicitacoes.html
+    ├── solicitacao_agendamento.html
+    ├── solicitacoes_consultor.html
+    ├── tipos_solicitacao.html
     └── auth/
         ├── login.html
         └── forgot_password.html
+
 ```
 
 ---

@@ -1,28 +1,29 @@
+<!-- templates/solicitacoes_consultor.html -->
 <!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Minhas Solicitações | Portal Vendrame</title>
+    <title>Solicitações em Andamento | Portal Vendrame</title>
 
     <link rel="icon" href="{{ url_for('static', filename='assets/icone.png') }}" type="image/png" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/minhas_solicitacoes.css') }}" />
-    <script defer src="{{ url_for('static', filename='js/minhas_solicitacoes.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/solicitacoes_consultor.css') }}" />
+    <script defer src="{{ url_for('static', filename='js/solicitacoes_consultor.js') }}"></script>
   </head>
 
   <body>
     <header class="topbar">
       <a class="back" href="{{ url_for('home_router.dashboard') }}">← Voltar</a>
       <div class="brand">
-        <h1>Minhas Solicitações</h1>
+        <h1>Solicitações em Andamento</h1>
       </div>
       <div></div>
     </header>
 
     <main class="page">
-      <!-- filtros -->
+      <!-- filtros (mesma estrutura da tela do cliente) -->
       <section class="filters">
-        <!-- 1) Buscar por nome ou CPF -->
+        <!-- Buscar por nome ou CPF -->
         <div class="filter">
           <label for="q">Buscar</label>
           <div class="search">
@@ -64,7 +65,7 @@
           </select>
         </div>
 
-        <!-- Status fixos -->
+        <!-- Status -->
         <div class="f">
           <label for="f_status">Selecione o Status</label>
           <select id="f_status">
@@ -87,6 +88,7 @@
           data-tipo="{{ (s.tipo_exame or '')|lower }}"
           data-proto="{{ (s.protocolo or '')|lower }}"
           data-status="{{ (s.status or '')|lower }}"
+          data-origem="{{ (s._origem or '') }}"
         >
           <div class="req-head">
             <div class="proto">
@@ -94,6 +96,7 @@
               <span class="val">{{ s.protocolo }}</span>
 
               {% if s.status %}
+                <!-- mantém seu padrão atual; JS normaliza e o CSS já tem fallback -->
                 <span class="badge badge-{{ (s.status or '')|lower|replace(' ','-') }}">
                   {{ s.status }}
                 </span>
@@ -111,6 +114,9 @@
           </div>
 
           <div class="req-body" hidden>
+            <!-- ===========================
+                 DETALHES (por tipo de exame)
+                 =========================== -->
             <div class="grid">
               {% set tipo = (s.tipo_exame or '')|lower %}
 
@@ -174,7 +180,7 @@
 
                 <div class="item"><span>Data de preferência:</span> <strong>{{ s.data_preferencia or "-" }}</strong></div>
 
-              {% elif tipo == 'mudança de riscos' or tipo == 'mudanca de riscos' %}
+              {% elif tipo == 'mudança de riscos' or tipo == 'mudanca de riscos' or tipo == 'mudança de riscos ocupacionais' or tipo == 'mudanca de riscos ocupacionais' %}
 
                 <div class="item"><span>Tipo de Exame:</span> <strong>{{ s.tipo_exame or "-" }}</strong></div>
                 <div class="item"><span>Empresa:</span> <strong>{{ s.empresa or "-" }}</strong></div>
@@ -237,12 +243,19 @@
                 <div class="item"><span>Profissional:</span> <strong>{{ s.profissional or "-" }}</strong></div>
 
               {% endif %}
+
+              <!-- ✅ NOVO: última resposta do consultor (para QUALQUER TIPO) -->
+              <div class="item item-wide">
+                <span>Última resposta do consultor:</span>
+                <strong>{{ s.resposta_consultor or "-" }}</strong>
+              </div>
             </div>
 
+            <!-- Documentos -->
             <div class="docs">
               <div class="docs-title">
                 <input type="checkbox" checked disabled />
-                <span>Documentos anexados (clique para baixar)</span>
+                <span>Documentos disponíveis:</span>
               </div>
 
               {% if s.documentos and s.documentos|length > 0 %}
@@ -253,12 +266,10 @@
                         <a href="{{ url_for('minhas_solicitacoes.baixar_documento_avaliacao', protocolo=s.protocolo) }}">
                           {{ d.filename }}
                         </a>
-
                       {% elif d.stored_name == '__retorno_db__' %}
                         <a href="{{ url_for('minhas_solicitacoes.baixar_documento_retorno', protocolo=s.protocolo) }}">
                           {{ d.filename }}
                         </a>
-
                       {% else %}
                         <a href="{{ url_for('minhas_solicitacoes.baixar_documento', protocolo=s.protocolo, stored_name=d.stored_name) }}">
                           {{ d.filename }}
@@ -272,13 +283,109 @@
               {% endif %}
             </div>
 
-            <!-- ✅ NOVO: Resposta do consultor (no FIM, com o mesmo estilo dos campos) -->
-            <div class="grid">
-              <div class="item">
-                <span>Última resposta do consultor:</span>
-                <strong>{{ s.resposta_consultor or "-" }}</strong>
+            <!-- Atualizar status -->
+            <div class="status-box">
+              <div class="status-title">Atualizar Status</div>
+
+              <div class="status-row">
+                <select
+                  class="status-select"
+                  data-protocolo="{{ s.protocolo }}"
+                  data-origem="{{ s._origem }}"
+                >
+                  <option value="Em Aberto" {% if (s.status or '') == 'Em Aberto' %}selected{% endif %}>Em Aberto</option>
+                  <option value="Em Andamento" {% if (s.status or '') == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                  <option value="Finalizado" {% if (s.status or '') == 'Finalizado' %}selected{% endif %}>Finalizado</option>
+                  <option value="Não Aprovado" {% if (s.status or '') == 'Não Aprovado' %}selected{% endif %}>Não Aprovado</option>
+                </select>
+
+                <!-- ✅ classe específica para salvar STATUS -->
+                <button
+                  class="btn-save-status"
+                  type="button"
+                  data-protocolo="{{ s.protocolo }}"
+                  data-origem="{{ s._origem }}"
+                >
+                  Salvar
+                </button>
+              </div>
+
+              <p class="status-hint">
+                Ao salvar, o status do protocolo será atualizado na base correspondente.
+              </p>
+            </div>
+
+            <!-- FINALIZAÇÃO (aparece SOMENTE quando status == Finalizado via JS) -->
+            <div class="finalizacao-box" hidden>
+              <div
+                class="consultor-avaliacao"
+                data-protocolo="{{ s.protocolo }}"
+                data-origem="{{ s._origem }}"
+              >
+                <div class="consultor-avaliacao__title">Orientações para o cliente</div>
+
+                <label class="consultor-label" style="margin-bottom:10px; margin-top:10px;">
+                  Escreva orientações importantes <span class="req">*</span>
+                </label>
+
+                <textarea
+                  class="consultor-textarea"
+                  name="orientacoes_cliente_{{ s.protocolo }}"
+                  data-protocolo="{{ s.protocolo }}"
+                  rows="5"
+                  placeholder="Ex: Comparecer com documento e guias de 5 dias, etc..."
+                ></textarea>
+
+                <div class="consultor-avaliacao__title" style="margin-top:14px;">
+                  Anexar documento final em PDF
+                </div>
+
+                <div class="upload-box">
+                  <input
+                    id="final_pdf_{{ s.protocolo }}"
+                    class="consultor-file"
+                    type="file"
+                    accept="application/pdf,.pdf"
+                    data-protocolo="{{ s.protocolo }}"
+                    data-origem="{{ s._origem }}"
+                  />
+
+                  <!-- o label vira a área clicável -->
+                  <label class="upload-ui" for="final_pdf_{{ s.protocolo }}">
+                    <div class="upload-ico" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 16V4" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M7 9l5-5 5 5" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 20h16" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                    </div>
+
+                    <div class="upload-txt">
+                      <div class="upload-title">Arraste e solte o PDF aqui</div>
+                    </div>
+                  </label>
+
+                  <div class="upload-filename">Nenhum arquivo selecionado</div>
+                </div>
+
+                <div class="consultor-actions">
+                  <!-- ✅ classe específica para salvar AVALIAÇÃO -->
+                  <button
+                    type="button"
+                    class="btn-save-avaliacao"
+                    data-protocolo="{{ s.protocolo }}"
+                    data-origem="{{ s._origem }}"
+                  >
+                    Salvar Avaliação
+                  </button>
+                </div>
+
+                <div class="final-msg is-ok" hidden>
+                  Aguarde
+                </div>
               </div>
             </div>
+            <!-- /FINALIZAÇÃO -->
 
           </div>
         </article>

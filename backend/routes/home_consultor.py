@@ -27,8 +27,8 @@ def solicitacoes_em_andamento():
     if not _is_logged():
         return redirect(url_for("auth.login"))
 
-    # ✅ só consultor (recomendado manter)
     if _tipo() != "consultor":
-        return redirect(url_for("home_router.home"))
+        return redirect(url_for("home_router.dashboard"))
 
-    return "<h1>Solicitações em andamento (em construção)</h1>"
+    return redirect("/solicitacoes-consultor")
+

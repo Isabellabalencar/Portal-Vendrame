@@ -201,3 +201,14 @@ body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;color:var(--text);backg
   .grid{grid-template-columns:1fr}
   .req-head{margin:12px}
 }
+
+/* item ocupando a linha inteira */
+.item.item-full{
+  grid-column: 1 / -1;
+}
+
+/* mantém o mesmo estilo do <strong>, mas permite quebra de linha */
+.resposta-consultor{
+  white-space: pre-wrap;
+  word-break: break-word;
+}

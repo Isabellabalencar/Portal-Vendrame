@@ -285,6 +285,9 @@ def minhas_solicitacoes():
         col_cpf = _first_existing(cols, ["cpf", "cpf_cliente"])
         col_user = _first_existing(cols, ["user", "usuario", "login"])
 
+        # ✅ NOVO: coluna resposta_consultor (se existir em qualquer tabela)
+        col_resposta = _first_existing(cols, ["resposta_consultor"])
+
         if not col_protocolo:
             continue
 
@@ -344,10 +347,24 @@ def minhas_solicitacoes():
                 if nome and not _doc_exists_in_list(docs, nome):
                     docs.insert(0, {"filename": nome, "stored_name": "__retorno_db__"})
 
+            # ✅ NOVO: valor da resposta do consultor (se a coluna existir na tabela)
+            resposta_consultor = "-"
+            if col_resposta and (col_resposta in cols):
+                val = r[col_resposta]
+                if val is not None and str(val).strip():
+                    resposta_consultor = str(val).strip()
+                else:
+                    resposta_consultor = "-"
+            else:
+                resposta_consultor = "-"
+
             item = {
                 "protocolo": protocolo,
                 "status": status,
                 "tipo_exame": _infer_tipo_exame(tabela, r, cols),
+
+                # ✅ NOVO (para exibir na tela do cliente)
+                "resposta_consultor": resposta_consultor,
 
                 # comuns
                 "telefone": get_any(r, "telefone", "whatsapp", "celular"),
